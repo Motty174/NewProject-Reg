@@ -22,6 +22,9 @@ route.post('/register',(req,res)=>{
     if(password!==password2){
         errors.push({msg: "Passwords don't match."})
     }
+    if(!/[a-zA-Z]/g.test(password)){
+        errors.push({msg: "Should contain at least 1 letter."})
+    }
     if(password.length<6){
         errors.push({msg: "Password is too short.At list 6 length."})
     }
@@ -52,11 +55,8 @@ route.post('/register',(req,res)=>{
                      })
                  }) 
                 }
-
          })
-         
     }
-
 })
 //Log in
 route.post('/login',(req,res,next)=>{
