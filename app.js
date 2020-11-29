@@ -9,8 +9,21 @@ const flash=require('connect-flash')
 const session=require('express-session')
 const passport=require('passport')
 
-
 const app=express()
+
+//Listen to port
+let server=app.listen(PORT,()=>{console.log(`[Server started on port: ${PORT}]`)})
+// //Create Socket io
+// const io=require('socket.io')(server)
+
+// io.on('connection', (socket) => {
+//     console.log('connected Usrr')
+//     socket.on('chat msg',(msg)=>{
+//         io.emit('chat msg',msg,name)
+//     })
+//   });
+
+
 //Passport
 require('./config/passport')(passport)
 //EJS
@@ -32,7 +45,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-//COnnect flas
+//COnnect flash
 app.use(flash())
 
 //Global vars
@@ -51,6 +64,3 @@ mongoose.connect(config.MongoURI,{useNewUrlParser: true, useUnifiedTopology: tru
 app.use('/users',require('./Routes/user'))
 app.use('/',require('./Routes/index'))
 
-
-//Listen to port
-app.listen(PORT,()=>{console.log(`[Server started on port: ${PORT}]`)})

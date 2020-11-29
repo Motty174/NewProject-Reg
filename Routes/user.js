@@ -26,7 +26,6 @@ route.post('/register',(req,res)=>{
         errors.push({msg: "Password is too short.At list 6 length."})
     }
     if(errors.length>0){
-        console.log('Run')
     res.render('register',{errors,name,email,password,password2 })
     }else{
          User.findOne({email: email})
