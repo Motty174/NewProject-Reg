@@ -17,7 +17,8 @@ const mes={
     from: `${require('../config/keys').email}`,
     to: email,
     subject: 'Account verification',
-    html: `<button>Verify my email.<a href="http://localhost:8080/users/${number}">Go.</a></button>`
+    html: `<h3>Thank you for registering in my new app.Click to the button below to verify your email.</h3><br>
+    <button><a href="http://localhost:8080/users/${number}">Verify my email.</a></button>`
 }
 mail.sendMail(mes,err=>{
     if(err){

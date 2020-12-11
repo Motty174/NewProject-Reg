@@ -72,7 +72,8 @@ route.post('/register',(req,res)=>{
                   event.emit('adress',{name:name,password:password,email:email})
                   verify(email,adress)
                   req.flash('sucess_msg','Email verification has been sent.');
-                  res.redirect('/users/login')
+                  res.redirect('/')
+                  res.end()
                  } 
                 }
          )
