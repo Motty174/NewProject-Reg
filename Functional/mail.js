@@ -18,7 +18,7 @@ const mes={
     to: email,
     subject: 'Account verification',
     html: `<h3>Thank you for registering in my new app.Click to the button below to verify your email.</h3><br>
-    <button><a href="http://localhost:8080/users/${number}">Verify my email.</a></button>`
+    <button><a href="https://lookregandlog.herokuapp.com/users/${number}">Verify my email.</a></button>`
 }
 mail.sendMail(mes,err=>{
     if(err){
