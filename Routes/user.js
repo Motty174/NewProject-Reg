@@ -71,7 +71,8 @@ route.post('/register',(req,res)=>{
                   adress=Math.round(Math.random()*100000)
                   event.emit('adress',{name:name,password:password,email:email})
                   verify(email,adress)
-                   res.end('Verification has been sent')
+                  req.flash('sucess_msg','Email verification has been sent.');
+                  res.redirect('/users/login')
                  } 
                 }
          )
