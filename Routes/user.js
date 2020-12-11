@@ -10,7 +10,8 @@ const event=new EventEmitter()
 
 let adress=''
 event.on('adress',(obj)=>{
-name=obj.name
+console.log(adress)
+    name=obj.name
 email=obj.email
 password=obj.password
   route.get(`/${adress}`,(req,res)=>{
