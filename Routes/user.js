@@ -3,6 +3,35 @@ const User=require('../models/user')
 const bcrypt=require('bcryptjs')
 const route=express.Router()
 const passport=require('passport')
+const verify=require('../Functional/mail')
+const {EventEmitter}=require('events')
+
+const event=new EventEmitter()
+
+let adress=''
+event.on('adress',(obj)=>{
+name=obj.name
+email=obj.email
+password=obj.password
+  route.get(`/${adress}`,(req,res)=>{
+    const user=new User({
+        name,email,password
+        })
+        //Hashing password
+        bcrypt.genSalt(10,(err,salt)=>{
+            bcrypt.hash(user.password,salt,(err,hash)=>{
+                if(err) throw err
+                user.password=hash
+                user.save()
+                .then(user=>{
+                    req.flash('sucess_msg','Now you are registered and can log in');
+                    res.redirect('/users/login')
+                })  
+                .catch(e=>console.log(e))
+            })})    
+  })  
+})
+
 
 //Routes GET
 route.get('/login',(req,res)=>{
@@ -32,32 +61,23 @@ route.post('/register',(req,res)=>{
     res.render('register',{errors,name,email,password,password2 })
     }else{
          User.findOne({email: email})
-         .then(user=>{
+         .then(async user=>{
              if(user){
                  errors.push({msg: "Email already exists"})
                 res.render('register',{errors,name,email,password,password2 })
              }else{
-                 const user=new User({
-                     name,email,password
-                 })
-                 //Hashing password
-                 bcrypt.genSalt(10,(err,salt)=>{
-                     bcrypt.hash(user.password,salt,(err,hash)=>{
-                        if(err) throw err
-                        user.password=hash
-                        user.save()
-                        .then(user=>{
-                            req.flash('sucess_msg','Now you are registered and can log in');
-                            res.redirect('/users/login')
-                        })  
-                        .catch(e=>console.log(e))
-                        console.log('User saved')
-                     })
-                 }) 
+                 
+                  //Sending email verification  
+                  adress=Math.round(Math.random()*100000)
+                  event.emit('adress',{name:name,password:password,email:email})
+                  verify(email,adress)
+                   res.end('Verification has been sent')
+                 } 
                 }
-         })
+         )
     }
 })
+
 //Log in
 route.post('/login',(req,res,next)=>{
 passport.authenticate('local',{
